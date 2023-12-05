@@ -1,0 +1,3 @@
+[ ] fix bugs with loading plugins at /fn route
+[ ] add kv store host functions
+[ ] handle dispenser for caddyfile for FTP server config

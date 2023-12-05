@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microscopic WebAssembly Analysis</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/d3-delaunay@6"></script>
+  <style>
+    html,
+    body {
+      background-color: #eee;
+      padding: none;
+      margin: initial;
+      box-shadow: inset 0 0 20rem 10rem #654ff090;
+    }
+
+    canvas {
+      filter: blur(0.66rem);
+      display: block;
+      background-color: #654ff030;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas></canvas>
+  <script>
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const numPoints = 42;
+
+    let points = d3.range(numPoints).map(() => [Math.random() * width, Math.random() * height]);
+    let delaunay;
+    let voronoi;
+
+    let canvas = d3.select("canvas")
+      .attr("width", width)
+      .attr("height", height);
+    let context = canvas.node().getContext("2d");
+
+    function drawVoronoi() {
+      context.clearRect(0, 0, width, height);
+
+      delaunay = d3.Delaunay.from(points);
+      voronoi = delaunay.voronoi([0, 0, width, height]);
+
+      context.strokeStyle = "#654ff050";
+      context.lineWidth = 100 + Math.random() * 50;
+
+      // Iterate over halfedges.
+      for (let i = 0; i < delaunay.halfedges.length; i++) {
+        const start = voronoi.cellPolygon(i >> 1) ? voronoi.cellPolygon(i >> 1)[i & 1] : null;
+        const end = voronoi.cellPolygon(i >> 1) ? voronoi.cellPolygon(i >> 1)[(i & 1) === 0 ? 1 : 0] : null;
+
+        if (start && end) {
+          context.beginPath();
+          context.moveTo(start[0], start[1]);
+          context.lineTo(end[0], end[1]);
+          context.stroke();
+        }
+        context.fillStyle = "#dddddd33";
+        context.beginPath();
+        context.arc(start[0], start[1], 20 + (Math.random() * 20), 0, 10 * Math.PI);
+        context.fill();
+      }
+
+    }
+
+    function animate() {
+      points = points.map(point => [
+        Math.max(5, Math.min(width - 5, point[0] + (Math.random() - 0.5) * 10)),
+        Math.max(5, Math.min(height - 5, point[1] + (Math.random() - 0.5) * 10))
+      ]);
+      drawVoronoi();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+
+</html>

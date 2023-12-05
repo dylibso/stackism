@@ -1,0 +1,12 @@
+[package]
+name = "kvplugin"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate_type = ["cdylib"]
+
+[dependencies]
+extism-pdk = { git = "https://github.com/extism/rust-pdk" }
+serde = { version = "1.0.192", features = ["derive"] }

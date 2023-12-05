@@ -1,0 +1,34 @@
+<html>
+
+<body>
+
+  <textarea placeholder="output"></textarea>
+
+  <p>width: <input type="range" class="width" value=50 /></p>
+
+  <p>height: <input type="range" class="height" value=50 /></p>
+  <button>Get Data</button>
+
+  <script type="application/javascript">
+    const button = document.querySelector('button');
+    const output = document.querySelector('textarea');
+    button.addEventListener("click", () => {
+      const ws = document.querySelector('input.width');
+      const hs = document.querySelector('input.height');
+      fetch(`/fn/content?width=${ws.value}px&height=${hs.value}px`, {
+        method: "GET",
+        headers: {
+          "Accept": "application/json",
+        }
+      }).then((resp) => {
+        console.log(resp)
+        resp.json().then((json) => {
+          output.value = JSON.stringify(json);
+        })
+      });
+    })
+
+  </script>
+</body>
+
+</html>

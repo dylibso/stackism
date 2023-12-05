@@ -1,0 +1,13 @@
+{
+  "after_file_put": [
+    {
+      "plugin": "reverse.wasm",
+      "allowed_hosts": [
+        "api.github.com"
+      ],
+      "allowed_paths": {
+        ".": "/"
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+# "global options block"
+{
+	http_port 8001
+	order extism first
+
+	ftpserver
+}
+
+# "site block"
+localhost:8000 {
+	# special-path for calling wasm server functions
+	handle_path /fn/* {
+		extism {
+			wasi true
+			config thing=testing a=b=lol b=wat=1=22=nnn
+			path functions
+		}
+	}
+
+	handle {
+		# regular static file server at www
+		root * www
+		try_files {path} {path}/index.html =404
+		file_server
+	}
+}
