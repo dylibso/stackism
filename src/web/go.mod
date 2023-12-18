@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/caddyserver/caddy/v2 v2.7.4
-	github.com/extism/go-sdk v1.0.0-rc1.0.20231109065905-d5022258ee0b
+	github.com/extism/go-sdk v1.0.0-rc2
 	github.com/tetratelabs/wazero v1.3.0
 	go.etcd.io/bbolt v1.3.8
 	go.uber.org/zap v1.25.0

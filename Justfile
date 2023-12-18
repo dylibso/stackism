@@ -15,3 +15,14 @@ start-example: deps build
 stop-example: 
     #!/usr/bin/env bash
     kill -9 $(pgrep caddy)
+
+build-kvplugin:
+    cd src/kvplugin && cargo build --target wasm32-unknown-unknown --release
+    
+build-content:
+    cd src/content && cargo build --target wasm32-unknown-unknown --release
+
+build-reverse:
+    cd src/reverse && tinygo build -o reverse.wasm -target wasi main.go
+
+build-plugins: build-reverse build-kvplugin build-content
