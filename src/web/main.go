@@ -232,12 +232,11 @@ func (s ExtismServer) ServeHTTP(res http.ResponseWriter, req *http.Request, h ca
 	)
 	kvWrite.SetNamespace("extism:host/user")
 
-	var level extism.LogLevel = extism.Info
 	moduleConfig := wazero.NewModuleConfig().WithStartFunctions()
 	plugin, err := extism.NewPlugin(req.Context(), manifest, extism.PluginConfig{
 		ModuleConfig: moduleConfig,
 		EnableWasi:   hostWasi,
-		LogLevel:     &level,
+		LogLevel:     extism.LogLevelInfo,
 	}, []extism.HostFunction{kvRead, kvWrite})
 	if err != nil {
 		s.logger.Info(fmt.Sprintf("failed to create plugin: %v", err))
